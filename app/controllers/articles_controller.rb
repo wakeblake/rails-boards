@@ -1,4 +1,7 @@
 class ArticlesController < ApplicationController
+
+  http_basic_authenticate_with name: "blake", password: "secret", except: [:index, :show]
+  
   def index
     @articles = Article.all
   end
@@ -29,7 +32,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
 
     if @article.update(article_params)
-      redirect_to @Article
+      redirect_to article_path
     else
       render :edit, status: :unprocessable_entity
     end  
@@ -44,6 +47,6 @@ class ArticlesController < ApplicationController
   
   private
   def article_params
-      params.require(:article).permit(:title, :body)
+      params.require(:article).permit(:title, :body, :status)
   end
 end
